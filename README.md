@@ -78,6 +78,9 @@ assert d == c
 
 ``` sh
 sage attack_on_rfl.sage
+```
+
+```sh
 
 # ----------- Repaired Version (LIGA, toy example, zeta=2) -----------------
 
