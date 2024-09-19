@@ -119,7 +119,8 @@ from sage.structure.parent import Parent
 from sage.matrix.constructor import Matrix
 from sage.modules.free_module import VectorSpace
 from copy import copy
-from sage.structure.element import is_Matrix, is_Vector
+from sage.structure.element import Matrix as MatrixType
+from sage.structure.element import Vector as VectorType
 from sage.rings.integer_ring import ZZ
 from sage.modules.free_module_element import vector
 from sage.rings.infinity import Infinity
@@ -172,7 +173,7 @@ def to_matrix_representation(v, sub_field=None, basis=None):
         ...
         TypeError: Input must be a vector
     """
-    if not is_Vector(v):
+    if not isinstance(v, VectorType):
         raise TypeError("Input must be a vector")
     base_field = v.base_ring()
     if not sub_field:
@@ -220,7 +221,7 @@ def from_matrix_representation(w, base_field=None, basis=None):
         ...
         TypeError: Input must be a matrix
     """
-    if not is_Matrix(w):
+    if not isinstance(w, MatrixType):
         raise TypeError("Input must be a matrix")
     sub_field = w.base_ring()
     if not base_field:
@@ -258,7 +259,7 @@ def rank_weight(c, sub_field=None, basis=None):
         sage: rank_weight(a, GF(4))
         2
     """
-    if is_Vector(c):
+    if isinstance(c, VectorType):
         c = to_matrix_representation(c, sub_field, basis)
     return c.rank()
 
@@ -317,7 +318,7 @@ def rank_distance(a, b, sub_field=None, basis=None):
     """
     if not (a.base_ring() == b.base_ring()):
         raise ValueError("The base field of {} and {} has to be the same".format(a, b))
-    if not (is_Vector(a) and is_Vector(b)):
+    if not (isinstance(a, VectorType) and isinstance(b, VectorType)):
         raise TypeError("Both inputs have to be vectors")
     if not len(a) == len(b):
         raise ValueError("The length of {} and {} has to be the same".format(a, b))
@@ -771,7 +772,7 @@ class LinearRankMetricCode(AbstractLinearRankMetricCode):
             [1 1 0]
             [0 0 1]
         """
-        if encoder_name is None or encoder_name is 'GeneratorMatrix':
+        if encoder_name is None or encoder_name == 'GeneratorMatrix':
             g = self._generator_matrix
         else:
             g = super(LinearRankMetricCode, self).generator_matrix(encoder_name, **kwargs)
